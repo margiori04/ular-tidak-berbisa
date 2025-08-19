@@ -186,8 +186,8 @@ if tab_choice == "📈 Rekap SubSLS":
         st.markdown("### 💾 Export Data")
 
         # Export ke CSV
-        csv = df_subsls.to_csv(index=False).encode("utf-8")
-        st.download_button("⬇️ Download CSV", data=csv, file_name="rekap_subsls.csv", mime="text/csv")
+        #csv = df_subsls.to_csv(index=False).encode("utf-8")
+        #st.download_button("⬇️ Download CSV", data=csv, file_name="rekap_subsls.csv", mime="text/csv")
 
         # Export ke Excel
         output = BytesIO()
