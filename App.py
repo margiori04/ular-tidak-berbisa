@@ -108,10 +108,7 @@ if tab_choice == "📊 Input & Hitung":
         rekap_data = []
         for seg in segment_data:
             jumlah_perkiraan_kk = int(round((seg["BTT"]/total_btt) * jumlah_kk_sls)) if total_btt else 0
-            total_muatan = max(
-                jumlah_perkiraan_kk,
-                seg["BTT"] + seg["BTT Kosong"] + seg["BBTT Non Usaha"] + seg["Perkiraan Muatan Usaha"]
-            )
+            total_muatan = max(jumlah_perkiraan_kk,seg["BTT"]) + seg["BTT Kosong"] + seg["BBTT Non Usaha"] + seg["Perkiraan Muatan Usaha"]
             rekap_data.append({
                 "Segmen": seg["Segmen"],
                 "Perkiraan KK": jumlah_perkiraan_kk,
