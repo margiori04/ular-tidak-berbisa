@@ -76,16 +76,16 @@ if tab_choice == "📊 Input & Hitung":
         st.rerun()
     
     with st.container():
-        jumlah_kk_sls = st.number_input("👨‍👩‍👧 Jumlah KK SLS:", min_value=1, step=1, key="jumlah_kk_sls")
         jumlah_segmen = st.number_input("📦 Jumlah Segmen:", min_value=1, step=1, key="jumlah_segmen")
 
     segment_data = []
-    if jumlah_kk_sls and jumlah_segmen:
+    if jumlah_segmen:
         st.markdown("### 📂 Data per Segmen")
 
         for i in range(int(jumlah_segmen)):
             with st.expander(f"📌 Segmen {i+1}", expanded=False):
                 # Input otomatis tersimpan di session_state dengan key unik
+                st.number_input("Perkiraan KK", min_value=0, step=1, key=f"kk_{i}")
                 st.number_input("BTT", min_value=0, step=1, key=f"btt_{i}")
                 st.number_input("BTT Kosong", min_value=0, step=1, key=f"btt_kosong_{i}")
                 st.number_input("BKU", min_value=0, step=1, key=f"bku_{i}")
@@ -95,6 +95,7 @@ if tab_choice == "📊 Input & Hitung":
                 # Ambil dari state supaya nilai tidak hilang
                 segment_data.append({
                     "Segmen": i+1,
+                    "Perkiraan KK": st.session_state.get(f"kk_{i}", 0),
                     "BTT": st.session_state.get(f"btt_{i}", 0),
                     "BTT Kosong": st.session_state.get(f"btt_kosong_{i}", 0),
                     "BKU": st.session_state.get(f"bku_{i}", 0),
@@ -107,11 +108,10 @@ if tab_choice == "📊 Input & Hitung":
         total_btt = sum([seg['BTT'] for seg in segment_data]) or 1
         rekap_data = []
         for seg in segment_data:
-            jumlah_perkiraan_kk = int(round((seg["BTT"]/total_btt) * jumlah_kk_sls)) if total_btt else 0
-            total_muatan = max(jumlah_perkiraan_kk,seg["BTT"]) + seg["BTT Kosong"] + seg["BBTT Non Usaha"] + seg["Perkiraan Muatan Usaha"]
+            total_muatan = max(seg["Perkiraan KK"],seg["BTT"]) + seg["BTT Kosong"] + seg["BBTT Non Usaha"] + seg["Perkiraan Muatan Usaha"]
             rekap_data.append({
                 "Segmen": seg["Segmen"],
-                "Perkiraan KK": jumlah_perkiraan_kk,
+                "Perkiraan KK": seg["Perkiraan KK"],
                 "BTT": seg["BTT"],
                 "BTT Kosong": seg["BTT Kosong"],
                 "BKU": seg["BKU"],
